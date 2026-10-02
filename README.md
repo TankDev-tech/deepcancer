@@ -2,314 +2,200 @@
 
 **Explainable AI for Breast Histopathology Classification**
 
-DeepCancer is an applied AI research project for breast histopathology image classification, combining **Swin Transformer** and **ConvNeXt** architectures with **Grad-CAM** explainability.
+DeepCancer is an applied AI research project exploring breast histopathology image classification through a hybrid **Swin Transformer + ConvNeXt** architecture with **Grad-CAM** explainability.
 
-The project explores how convolutional neural networks and vision transformers can be combined for histopathological image analysis while providing visual explanations of model attention.
+The project combines experimental deep learning research with an interactive research prototype for inspecting classification outputs and model activation patterns.
 
-> **Research use only.** DeepCancer is a research and educational prototype. It is not a medical device and is not intended for clinical diagnosis or treatment decisions.
+**Histopathology Image → Hybrid AI Model → Classification → Grad-CAM Interpretation**
 
-## Research Overview
+> **Research & Education Only**  
+> DeepCancer is a research prototype. It is not a clinically validated diagnostic system or an approved medical device and is not intended to replace professional medical judgment.
 
-The research evaluates a hybrid deep learning architecture on the **BreaKHis (Breast Cancer Histopathological Image Classification)** dataset.
+## Research at a Glance
 
-The dataset contains:
-
-- **7,909** histopathological images
-- **82** patients
-- **4** magnification levels: 40×, 100×, 200× and 400×
-- H&E-stained breast tissue images
-- Binary and eight-class classification tasks
-
-Two independent classification problems were investigated:
-
-**Binary classification**
-
-`Benign ↔ Malignant`
-
-**Eight-class classification**
-
-Benign:
-- Adenosis
-- Fibroadenoma
-- Phyllodes tumor
-- Tubular adenoma
-
-Malignant:
-- Ductal carcinoma
-- Lobular carcinoma
-- Mucinous carcinoma
-- Papillary carcinoma
+| | |
+| --- | --- |
+| **Research Area** | Breast histopathology image classification |
+| **Dataset** | BreaKHis |
+| **Dataset Size** | 7,909 images · 82 patients |
+| **Magnifications** | 40× · 100× · 200× · 400× |
+| **Architecture** | Swin Transformer + ConvNeXt |
+| **Explainability** | Grad-CAM |
+| **Tasks** | Binary + Eight-class classification |
+| **Framework** | PyTorch |
+| **Publication** | Journal of Artificial Intelligence with Applications, 2025 |
 
 ## Hybrid Architecture
 
-The proposed architecture combines two complementary feature-learning approaches.
+DeepCancer combines two complementary visual representation approaches.
 
 <pre>
-                 Histopathology Image
-                         │
-                         ▼
-                    Preprocessing
-                         │
-              ┌──────────┴──────────┐
-              │                     │
-              ▼                     ▼
-        ConvNeXt Backbone     Swin Transformer
-              │                     │
-              │                     │
-       Local / Spatial        Global / Contextual
-          Features                Features
-              │                     │
-              └──────────┬──────────┘
-                         │
-                         ▼
-                  Feature Fusion
-                         │
-                         ▼
-                   Classification
-                         │
-              ┌──────────┴──────────┐
-              │                     │
-              ▼                     ▼
-          Prediction            Grad-CAM
-                                    │
-                                    ▼
-                           Visual Explanation
+                     Histopathology Image
+                             │
+                             ▼
+                        Preprocessing
+                             │
+                  ┌──────────┴──────────┐
+                  │                     │
+                  ▼                     ▼
+              ConvNeXt           Swin Transformer
+                  │                     │
+                  ▼                     ▼
+          Local / Spatial       Global / Contextual
+              Features               Features
+                  │                     │
+                  └──────────┬──────────┘
+                             │
+                             ▼
+                    Hybrid Representation
+                             │
+                             ▼
+                       Classification
+                             │
+                  ┌──────────┴──────────┐
+                  │                     │
+                  ▼                     ▼
+             Prediction             Grad-CAM
+                                          │
+                                          ▼
+                                  Visual Interpretation
 </pre>
 
-### ConvNeXt
+**ConvNeXt** provides convolution-based local feature extraction, while **Swin Transformer** contributes window-based contextual representation.
 
-ConvNeXt provides convolution-based spatial feature extraction and captures local tissue characteristics.
+The research investigates their complementary use for histopathological image classification.
 
-### Swin Transformer
+**[Explore the architecture →](./docs/architecture.md)**
 
-Swin Transformer uses window-based self-attention and shifted windows to model contextual relationships across image regions.
+## Experimental Results
 
-### Hybrid Representation
+Two separate classification tasks were evaluated on the BreaKHis dataset.
 
-The two backbones operate as complementary feature extractors.
+| Task | Accuracy | Precision | Recall | F1-score |
+| --- | ---: | ---: | ---: | ---: |
+| **Binary** | **98.86%** | **99.07%** | **99.25%** | **99.16%** |
+| **Eight-class** | **93.49%** | **93.46%** | **93.49%** | **93.43%** |
 
-The research investigates whether combining local convolutional representations with transformer-based contextual representations can improve histopathological classification performance.
+### Binary Classification
 
-## Experimental Setup
+![Binary classification confusion matrix](./assets/binary-confusion-matrix.png)
 
-The BreaKHis images were rescaled to **224 × 224 pixels** for model compatibility.
+The binary experiment distinguishes **benign** from **malignant** histopathological images.
 
-Training was conducted using:
+The displayed confusion matrix contains **1,644 correct classifications out of 1,662 evaluated samples**.
+
+### Eight-Class Classification
+
+The multiclass experiment extends the task to eight histopathological tumor subtypes:
+
+**Benign:** Adenosis · Fibroadenoma · Phyllodes tumor · Tubular adenoma
+
+**Malignant:** Ductal carcinoma · Lobular carcinoma · Mucinous carcinoma · Papillary carcinoma
+
+**[View the complete experimental results →](./docs/results.md)**  
+**[Read the experimental methodology →](./docs/methodology.md)**
+
+> These metrics represent experimental benchmark results obtained on the BreaKHis research dataset. They must not be interpreted as clinical validation or real-world diagnostic performance.
+
+## Explainable AI
+
+DeepCancer incorporates **Grad-CAM** to provide visual information about image regions associated with model predictions.
+
+![DeepCancer Grad-CAM interpretability](./assets/gradcam-interpretability.png)
+
+The research prototype exposes:
+
+- Original histopathological image
+- Combined Grad-CAM visualization
+- Global/context-oriented visualization
+- Local-feature-oriented visualization
+
+These visualizations are intended for research-oriented inspection of model behavior.
+
+They are not pathological annotations and do not establish that a prediction is medically correct.
+
+**[Explore explainability →](./docs/explainability.md)**
+
+## Research Prototype
+
+The research model is exposed through an interactive image-analysis workflow.
+
+![DeepCancer research prototype](./assets/prototype-image-upload.png)
+
+<pre>
+Research-Use Conditions
+        │
+        ▼
+Histopathology Image
+        │
+        ▼
+AI Analysis
+        │
+        ▼
+Classification Output
+        │
+        ▼
+Grad-CAM Interpretation
+</pre>
+
+### Example Model Output
+
+![Example malignant-class model output](./assets/prototype-result-malignant.png)
+
+The screenshot above represents an **individual example inference**.
+
+The probability displayed by the interface belongs to that specific analyzed sample and must not be interpreted as overall model accuracy or as the probability that a patient has cancer.
+
+**[Explore the prototype interface →](./docs/interface.md)**
+
+## Dataset
+
+DeepCancer was experimentally evaluated using the open-access **BreaKHis (Breast Cancer Histopathological Image Classification)** dataset.
+
+| Property | Value |
+| --- | --- |
+| Images | **7,909** |
+| Patients | **82** |
+| Magnifications | **40×, 100×, 200×, 400×** |
+| Staining | H&E |
+| Original resolution | 700 × 460 |
+| Model input | 224 × 224 |
+| Classification tasks | Binary + Eight-class |
+
+The dataset itself is not distributed through this repository.
+
+## Experimental Environment
+
+The published experiments were conducted using:
 
 - **PyTorch**
-- **NVIDIA A100 GPU**
 - **Google Colab**
+- **NVIDIA A100 GPU**
 - **Adam optimizer**
 - **Cross-Entropy Loss**
 - **20 training epochs**
 - Early stopping based on validation loss
 
-Binary and multiclass models were trained separately.
-
 The multiclass configuration additionally used StepLR learning-rate scheduling.
 
-## Experimental Results
-
-The following results were reported in the published study.
-
-### Binary Classification
-
-| Metric | Result |
-| --- | ---: |
-| Accuracy | **98.86%** |
-| Precision | **99.07%** |
-| Recall / Sensitivity | **99.25%** |
-| F1-score | **99.16%** |
-
-The binary task distinguishes **benign** from **malignant** breast histopathology images.
-
-### Eight-Class Classification
-
-| Metric | Result |
-| --- | ---: |
-| Accuracy | **93.49%** |
-| Precision | **93.46%** |
-| Recall | **93.49%** |
-| F1-score | **93.43%** |
-
-The multiclass task distinguishes eight histopathological tumor subtypes.
-
-> These results are experimental benchmark results obtained using the BreaKHis dataset. They must not be interpreted as clinical validation or real-world diagnostic performance.
-
-## Explainable AI with Grad-CAM
-
-Classification probability alone does not explain which image regions contributed to a model prediction.
-
-DeepCancer therefore incorporates **Grad-CAM** visualization into the prototype workflow.
-
-<pre>
-Histopathology Image
-        │
-        ▼
-Hybrid Model
-        │
-        ├────────────► Classification
-        │
-        ▼
-Activation Analysis
-        │
-        ▼
-Grad-CAM Heatmap
-        │
-        ▼
-Visual Interpretation
-</pre>
-
-The resulting visualization highlights image regions associated with the model's prediction and provides an additional layer for research-oriented model inspection.
-
-Grad-CAM does not establish clinical correctness and should not be interpreted as a substitute for expert pathological evaluation.
-
-## Research Prototype
-
-The research was accompanied by an interactive software prototype.
-
-The published study describes a Python-based desktop application providing:
-
-- Histopathology image upload
-- Model inference
-- Prediction output
-- Grad-CAM visualization
-- Offline operation
-- CPU fallback
-- Windows and macOS compatibility
-
-The current DeepCancer project also provides a web-based research experience for exploring the image-to-analysis workflow.
-
-**Live research platform:** [DeepCancer.org](http://deepcancer.org/)
-
-## Inference and Resource Constraints
-
-The published prototype was designed to support inference without requiring dedicated high-end GPU hardware.
-
-The study reports average inference times of approximately **2–3 seconds on low-resource hardware** for the lightweight desktop application.
-
-This characteristic was investigated as part of making the research prototype accessible in resource-constrained environments.
-
-Hardware, model configuration, operating system, and deployment environment can affect actual inference performance.
-
-## Dataset
-
-This research uses the open-access **BreaKHis** dataset introduced by Spanhol et al.
-
-**Dataset characteristics**
-
-| Property | Value |
-| --- | --- |
-| Images | 7,909 |
-| Patients | 82 |
-| Magnifications | 40×, 100×, 200×, 400× |
-| Image format | PNG |
-| Original resolution | 700 × 460 |
-| Model input | 224 × 224 |
-| Color space | RGB |
-| Classification tasks | Binary + Eight-class |
-
-The dataset itself is not distributed through this repository.
+The accompanying prototype was designed to support inference independently from the original GPU training environment.
 
 ## Published Research
 
-The research methodology and experimental results were published as:
+The methodology and experimental results were published as:
 
-**Histopathological Breast Cancer Classification Using a Hybrid Swin Transformer and ConvNeXt Architecture**
+### Histopathological Breast Cancer Classification Using a Hybrid Swin Transformer and ConvNeXt Architecture
 
-**Authors:** Murat Onur Kaderoğlu, Emre Şatır
+**Murat Onur Kaderoğlu · Emre Şatır**
 
-**Journal:** Journal of Artificial Intelligence with Applications  
-**Volume / Issue:** 6(1)  
-**Pages:** 18–25  
-**Year:** 2025
+*Journal of Artificial Intelligence with Applications*  
+2025 · 6(1) · 18–25
 
 **DOI:** [10.5281/zenodo.18138734](https://doi.org/10.5281/zenodo.18138734)
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18138734.svg)](https://doi.org/10.5281/zenodo.18138734)
 
-## Research Limitations
-
-The experimental results should be interpreted within the boundaries of the study.
-
-Important limitations include:
-
-- Training and evaluation were performed using a single public dataset
-- Controlled benchmark evaluation does not represent clinical deployment
-- Histopathological data can vary across institutions, scanners, staining protocols, and tissue-preparation procedures
-- Distribution shifts may affect model performance
-- Multicenter independent validation has not yet been demonstrated
-- Prospective clinical validation would be required before clinical deployment
-
-The published research identifies multi-institutional validation, domain adaptation, prospective evaluation with pathologists, and further interpretability work as important future directions.
-
-## Clinical and Regulatory Boundary
-
-DeepCancer is currently positioned as a **research and educational prototype**.
-
-It is not presented as:
-
-- A clinically validated diagnostic system
-- An autonomous diagnostic tool
-- A replacement for a pathologist
-- An FDA- or CE-approved medical device
-- A system for making treatment decisions
-
-Experimental model outputs and Grad-CAM visualizations require appropriate expert interpretation.
-
-Any future clinical use would require independent validation, appropriate regulatory processes, and evaluation within real clinical environments.
-
-## Project Scope
-
-This repository serves as a public technical and research showcase for DeepCancer.
-
-### Publicly documented
-
-- Research methodology
-- Hybrid architecture
-- Dataset characteristics
-- Experimental setup
-- Published benchmark results
-- Explainability approach
-- Prototype architecture
-- Research limitations
-- Publication metadata
-
-### Not publicly distributed
-
-- Production model weights
-- Training infrastructure credentials
-- Private deployment configuration
-- Security-sensitive configuration
-- Operational secrets
-- Restricted or private datasets
-
-## Documentation
-
-Additional technical documentation will be maintained in this repository as the public project documentation develops.
-
-- Architecture documentation
-- Experimental methodology
-- Explainability workflow
-- Prototype interface
-- Published research
-
-## Project Resources
-
-**Research platform:** [DeepCancer.org](http://deepcancer.org/)
-
-**TankDev system overview:**  
-[DeepCancer — Explainable AI for Breast Histopathology](https://tankdev.tech/tr/systems/deepcancer)
-
-**Engineering case study:**  
-[DeepCancer Case Study](https://tankdev.tech/tr/case-studies/deepcancer)
-
-**Published research:**  
-[Histopathological Breast Cancer Classification Using a Hybrid Swin Transformer and ConvNeXt Architecture](https://doi.org/10.5281/zenodo.18138734)
-
-## Citation
-
-If referencing the published research, please cite the associated journal article:
+### Citation
 
 ```text
 Kaderoğlu, M. O., & Şatır, E. (2025).
@@ -319,15 +205,75 @@ Journal of Artificial Intelligence with Applications, 6(1), 18–25.
 https://doi.org/10.5281/zenodo.18138734
 ```
 
-## About TankDev
+## Research Limitations
 
-[DeepCancer](http://deepcancer.org/) is an applied AI research project developed within the TankDev engineering portfolio.
+The experimental results should be interpreted within the boundaries of the published study.
 
-[TankDev](https://tankdev.tech) works across custom software, applied artificial intelligence, process automation, web applications, and system integration.
+The current work was trained and evaluated using a single public research dataset. It has not established generalization across independent hospitals, pathology laboratories, scanner systems, staining protocols, tissue preparation procedures, or prospective patient populations.
+
+Future research directions identified in the study include:
+
+- Multi-institutional validation
+- Evaluation across diverse scanner and staining conditions
+- Domain adaptation
+- Stain normalization
+- Prospective evaluation with pathologists
+- Further interpretability research
+- Multimodal data integration
+
+## Clinical Boundary
+
+DeepCancer is currently a **research and educational prototype**.
+
+It is not presented as:
+
+- A clinically validated diagnostic system
+- An autonomous diagnostic tool
+- A replacement for a pathologist
+- An FDA- or CE-approved medical device
+- A system for making treatment decisions
+
+Any future transition toward clinical use would require independent validation, prospective clinical evaluation, appropriate regulatory processes, and assessment in representative clinical environments.
+
+## Documentation
+
+| Document | Description |
+| --- | --- |
+| **[Architecture](./docs/architecture.md)** | Hybrid Swin Transformer + ConvNeXt architecture |
+| **[Methodology](./docs/methodology.md)** | Dataset, preprocessing, training and evaluation |
+| **[Experimental Results](./docs/results.md)** | Metrics, confusion matrices, training curves and ROC analysis |
+| **[Explainability](./docs/explainability.md)** | Grad-CAM and model interpretability |
+| **[Prototype Interface](./docs/interface.md)** | End-to-end research prototype workflow |
+
+## Public Documentation Boundary
+
+This repository is a public technical and research showcase.
+
+It documents the research methodology, architecture, experimental results, explainability approach, and prototype workflow.
+
+The repository does not distribute production model weights, private implementation code, infrastructure credentials, deployment secrets, restricted datasets, or security-sensitive configuration.
+
+## Project Resources
+
+**Research Platform:** [DeepCancer.org](http://deepcancer.org/)
+
+**System Overview:**  
+[DeepCancer — Explainable AI for Breast Histopathology](https://tankdev.tech/tr/systems/deepcancer)
+
+**Engineering Case Study:**  
+[DeepCancer Case Study](https://tankdev.tech/tr/case-studies/deepcancer)
+
+**Published Research:**  
+[DOI: 10.5281/zenodo.18138734](https://doi.org/10.5281/zenodo.18138734)
+
+## About
+
+DeepCancer is an applied AI research project developed within the **[TankDev](https://tankdev.tech)** engineering portfolio.
+
+TankDev works across custom software, applied artificial intelligence, process automation, web applications, and system integration.
 
 ---
 
 **Research & Education Only — Not for Clinical Diagnosis**
 
-Developed by **[TankDev](https://tankdev.tech)**  
-[DeepCancer](http://deepcancer.org/) · [Research](https://doi.org/10.5281/zenodo.18138734) · [Case Study](https://tankdev.tech/tr/case-studies/deepcancer)
+[DeepCancer](http://deepcancer.org/) · [TankDev](https://tankdev.tech) · [Research](https://doi.org/10.5281/zenodo.18138734) · [Case Study](https://tankdev.tech/tr/case-studies/deepcancer)
